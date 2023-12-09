@@ -11,11 +11,14 @@ import java.util.Collection;
 public class Chat {
     @Subscribe
     public void onPlayerChat(PlayerChatEvent event) {
-        Player sendMessagePlayer = event.getPlayer();
+        String originMessage = event.getMessage();
+        if (!originMessage.substring(0, 1).equals("@")) return;
 
-        String playerServerName = sendMessagePlayer.getCurrentServer().get().getServerInfo().getName();
+        Player sendMessagePlayer = event.getPlayer();
+        String serverName = sendMessagePlayer.getCurrentServer().get().getServerInfo().getName();
         String playerName = sendMessagePlayer.getUsername();
-        Component message = Component.text(playerServerName+"->"+playerName+">>"+event.getMessage());
+        originMessage = originMessage.substring(1);
+        Component message = Component.text(serverName +"->"+playerName+">>"+ originMessage);
 
         int serverHash = sendMessagePlayer.getCurrentServer().get().getServerInfo().hashCode();
         Collection<Player> playerList = TbcService.server.getAllPlayers();
@@ -23,6 +26,5 @@ public class Chat {
             if (player.getCurrentServer().get().getServerInfo().hashCode() == serverHash) continue;
             player.sendMessage(message);
         }
-
     }
 }
