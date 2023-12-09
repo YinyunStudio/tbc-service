@@ -22,8 +22,6 @@ public class Chat {
         for (Player player : playerList) {
             if (player.getCurrentServer().get().getServerInfo().hashCode() == serverHash) continue;
             player.sendMessage(message);
-            TbcService.logger.info(player.getCurrentServer().get().getServerInfo().hashCode()+"");
-            TbcService.logger.info(serverHash+"");
         }
 
     }
